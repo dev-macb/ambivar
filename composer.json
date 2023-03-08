@@ -1,20 +1,20 @@
 {
     "name": "dev-macb/ambivar",
     "type": "library",
-    "description": "Carregador de variáveis de ambiente para projetos PHP",
     "keywords": ["environment", "env", "dotenv"],
-    "license" : "MIT",
+    "description": "Carregador de variáveis de ambiente para projetos PHP",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "DevMacb\\Ambivar\\": "src/"
+        }
+    },
     "authors": [
         {
             "name": "Miguel Alves Cordeiro Braz",
             "email": "dev.macb@gmail.com"
         }
     ],
-    "autoload": {
-        "MacB\\Ambivar\\": "src/"
-    },
-    "require": {
-        "php": "^8.0"
-    },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "require": {}
 }
