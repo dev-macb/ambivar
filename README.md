@@ -1,0 +1,2 @@
+# ambivar
+dot env php
