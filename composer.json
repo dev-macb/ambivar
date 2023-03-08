@@ -11,7 +11,7 @@
         }
     ],
     "autoload": {
-        "MacB\\Ambivar\\": "src/"
+        "MacB\\": "src/"
     },
     "require": {
         "php": "^8.0"
