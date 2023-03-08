@@ -1,6 +1,4 @@
-<div id="título" align="center">
-    <h1>🔷 Ambivar 🔷</h1>
-</div>
+<h1 align="center">🔷 Ambivar 🔷</h1>
 
 
 <details>
