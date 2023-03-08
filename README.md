@@ -62,7 +62,7 @@ $ composer install
     use MacB\Ambivar;
 
     // Carregar arquivo .env passando o caminho do diretório
-    Ambivar::Carregar();
+    Ambivar::Carregar(__DIR__);
 ?>
 ```
 
