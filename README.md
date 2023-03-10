@@ -62,13 +62,13 @@ Use as funcionalidades do pacote
     // Carregar .env na raiz do projeto
     Ambivar::Carregar();
 
-    // Carregar .env especificando o diretório em que o arquivo se encontra
-    Ambivar::Carregar(__DIR__.'/dotenv');
+    // Carregar arquivo .env especificando o diretório
+    Ambivar::Carregar(__DIR__.'/pasta/subpasta');
 
     // Adicione novas variáveis passando seu nome e velor
     Ambivar::Definir_Variavel('URL', 'http://localhost');
 
-    // Utilize as variáveis usando $_ENV ou getvar()
+    // Utilize os valores usando $_ENV, $_SERVER ou getvar()
     echo getenv('URL');
     echo $_ENV['URL'];
     echo $_SERVER['URL'];
