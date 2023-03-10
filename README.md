@@ -74,9 +74,12 @@ Use as funcionalidades do pacote
     echo $_SERVER['URL'];
 
     // Remova variáveis existentes passando seu nome
-    Ambivar::Definir_Variavel('URL');
+    Ambivar::Apagar_Variavel('URL');
 ?>
 ```
+<blockquote>
+    Lembre-se de adicionar no <code>.gitignore</code> as arquivos de variáveis de ambiente para não colocar dados sensíveis do seu projeto para repositórios na nuvem
+</blockquote>
 
 <p align="center">🔷</p>
 
