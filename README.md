@@ -57,7 +57,7 @@ BD_PASS=senha_do_usuario
 Use as funcionalidades do pacote
 ```php
 <?php
-    use MacB\Ambivar;
+    use DevMacB\Ambivar;
 
     // Carregar .env na raiz do projeto
     Ambivar::Carregar();

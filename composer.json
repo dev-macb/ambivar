@@ -2,7 +2,7 @@
     "name": "dev-macb/ambivar",
     "type": "library",
     "keywords": ["env", "dotenv", "environment", "variaveis", "ambiente", "variáveis de ambiente", "ambivar"],
-    "description": "Carregador de variáveis de ambiente para projetos PHP",
+    "description": "O Ambivar é um pacote em PHP que tem como objetivo facilitar a gestão de variáveis de ambiente em seus projetos.",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -16,5 +16,7 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "php": ">=7.0"
+    }
 }
