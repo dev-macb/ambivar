@@ -1,12 +1,12 @@
 {
     "name": "dev-macb/ambivar",
     "type": "library",
-    "keywords": ["environment", "env", "dotenv"],
+    "keywords": ["env", "dotenv", "environment", "variaveis", "ambiente", "variáveis de ambiente", "ambivar"],
     "description": "Carregador de variáveis de ambiente para projetos PHP",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "DevMacb\\Ambivar\\": "src/"
+            "DevMacb\\": "src/"
         }
     },
     "authors": [
