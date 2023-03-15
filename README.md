@@ -2,9 +2,9 @@
 
 
 <div id="metadados" align="center">
-    <img alt="Packagist Version" src="https://img.shields.io/packagist/v/dev-macb/ambivar">
-    <img alt="Packagist Downloads" src="https://img.shields.io/packagist/dm/dev-macb/ambivar">
-    <img alt="Packagist License" src="https://img.shields.io/packagist/l/dev-macb/ambivar">
+    <img alt="Packagist Version" src="https://img.shields.io/packagist/v/dev-macb/ambivar?color=blue&logoColor=gray">
+    <img alt="Packagist Downloads" src="https://img.shields.io/packagist/dm/dev-macb/ambivar?color=blue&logoColor=gray">
+    <img alt="Packagist License" src="https://img.shields.io/packagist/l/dev-macb/ambivar?color=blue&logoColor=gray">
 </div>
 
 
