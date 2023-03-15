@@ -1,5 +1,6 @@
 {
     "name": "dev-macb/ambivar",
+    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -23,7 +24,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "DevMacb\\": "src/"
+            "DevMacb\\Ambivar\\": "src/"
         }
     },
     "require": {
