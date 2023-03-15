@@ -1,21 +1,32 @@
 {
     "name": "dev-macb/ambivar",
+    "version": "1.0.0",
     "type": "library",
-    "keywords": ["env", "dotenv", "environment", "variaveis", "ambiente", "variáveis de ambiente", "ambivar"],
-    "description": "O Ambivar é um pacote em PHP que tem como objetivo facilitar a gestão de variáveis de ambiente em seus projetos.",
     "license": "MIT",
+    "keywords": [
+        "ambivar",
+        "variaveis",
+        "ambiente", 
+        "variáveis de ambiente",
+        "env", 
+        "dotenv", 
+        "environment"
+    ],
+    "description": "O Ambivar é um pacote em PHP que tem como objetivo facilitar a gestão de variáveis de ambiente em seus projetos.",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Miguel Alves Cordeiro Braz",
+            "role": "Desenvolvedor",
+            "homepage": "https://dev-macb.github.io/",
+            "email": "dev.macb@gmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "DevMacb\\": "src/"
         }
     },
-    "authors": [
-        {
-            "name": "Miguel Alves Cordeiro Braz",
-            "email": "dev.macb@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
     "require": {
         "php": ">=7.0"
     }
