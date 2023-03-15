@@ -1,5 +1,5 @@
-<?php 
-    namespace DevMacB\Ambivar;
+<?php
+    namespace DevMacB;
 
 
     class Ambivar {
