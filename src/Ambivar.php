@@ -1,10 +1,10 @@
 <?php
-    namespace DevMacB;
+    namespace DevMacB\Ambivar;
 
 
     class Ambivar {
         public static function dotenv() {
-            $arquivo_env = __DIR__.'/.env';
+            $arquivo_env = __DIR__.'/../../../../.env';
             if (file_exists($arquivo_env)) {
                 $linhas = file($arquivo_env);
                 foreach($linhas as $linha) {
@@ -13,8 +13,9 @@
             }
         }
 
-        public static function carregar(string $caminho = __DIR__) {
+        public static function carregar(string $caminho) {
             if (file_exists($caminho.'/.env')) return false;
+
             $linhas = file($caminho.'/.env');
             foreach($linhas as $linha) {
                 putenv(trim($linha));

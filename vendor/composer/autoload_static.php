@@ -9,12 +9,12 @@ class ComposerStaticInit0a4b281152ed77c7f2344e2bf8e84dc8
     public static $prefixLengthsPsr4 = array (
         'D' => 
         array (
-            'DevMacb\\' => 8,
+            'DevMacb\\Ambivar\\' => 16,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'DevMacb\\' => 
+        'DevMacb\\Ambivar\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
