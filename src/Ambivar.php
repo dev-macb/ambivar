@@ -3,14 +3,22 @@
 
 
     class Ambivar {
-        public static function carregar_env(string $caminho = __DIR__) {
-            if (file_exists($caminho.'/.env')) return false;
+        public static function dotenv() {
+            $arquivo_env = __DIR__.'/.env';
+            if (file_exists($arquivo_env)) {
+                $linhas = file($arquivo_env);
+                foreach($linhas as $linha) {
+                    putenv(trim($linha));
+                }
+            }
+        }
 
+        public static function carregar(string $caminho = __DIR__) {
+            if (file_exists($caminho.'/.env')) return false;
             $linhas = file($caminho.'/.env');
             foreach($linhas as $linha) {
                 putenv(trim($linha));
             }
-
             return true;
         }
 

@@ -47,6 +47,7 @@ $ composer install
 Para usar o Ambivar basta criar um arquivo <code>.env</code> na raiz de seu projeto. Como, por exemplo:
 
 ```env
+BD_DRIV=mysql | pgsql
 BD_HOST=localhost
 BD_PORT=12345
 BD_NAME=nome_do_banco
@@ -60,13 +61,13 @@ Use as funcionalidades do pacote
     use DevMacB\Ambivar;
 
     // Carregar .env na raiz do projeto
-    Ambivar::Carregar();
+    Ambivar::dotenv();
 
     // Carregar arquivo .env especificando o diretório
-    Ambivar::Carregar(__DIR__.'/pasta/subpasta');
+    Ambivar::carregar(__DIR__.'/pasta/subpasta');
 
     // Adicione novas variáveis passando seu nome e velor
-    Ambivar::Definir_Variavel('URL', 'http://localhost');
+    Ambivar::escrever_variavel('URL', 'http://localhost');
 
     // Utilize os valores usando $_ENV, $_SERVER ou getvar()
     echo getenv('URL');
@@ -74,7 +75,7 @@ Use as funcionalidades do pacote
     echo $_SERVER['URL'];
 
     // Remova variáveis existentes passando seu nome
-    Ambivar::Apagar_Variavel('URL');
+    Ambivar::apagar_variavel('URL');
 ?>
 ```
 <blockquote>
