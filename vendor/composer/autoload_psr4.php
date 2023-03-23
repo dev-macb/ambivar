@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'DevMacb\\Ambivar\\' => array($baseDir . '/src'),
+    'DevMacb\\' => array($baseDir . '/src'),
 );
