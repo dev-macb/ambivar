@@ -1,6 +1,7 @@
 <h1 align="center">🔷 Ambivar 🔷</h1>
 
 
+
 <div id="metadados" align="center">
     <img alt="Packagist Version" src="https://img.shields.io/packagist/v/dev-macb/ambivar?color=blue&logoColor=gray">
     <img alt="Packagist Downloads" src="https://img.shields.io/packagist/dm/dev-macb/ambivar?color=blue&logoColor=gray">
@@ -8,7 +9,10 @@
 </div>
 
 
+
 ---
+
+
 
 <h2 id="objetivo">🎯 Objetivo</h2>
 <p>
@@ -58,17 +62,34 @@ Use as funcionalidades do pacote
     // Importação do módulo
     use DevMacB\Ambivar;
 
-    // Carregar arquivo .env no diretório especificado
-    Ambivar::carregar(__DIR__);
+    // Carregar todos os arquivos com extensão .env na raiz do projeto
+    Ambivar::dotenv();
+
+    // Carregar um arquivo .env específico
+    Ambivar::carregar(__DIR__, 'nome_arquivo');
+
+    // Escrever uma variável de ambiente no arquivo especificado
+    Ambivar::escrever_env(__DIR__, '', 'NOME_PROJETO', 'Ambivar');
+
+    // Apagar uma variável de ambiente específica de um arquivo .env
+    Ambivar::apagar_env(__DIR__, '', 'URL');
 
     // Use as variáveis de ambiente
-    echo getenv('URL');
+    echo getenv('URL');    
 ?>
 ```
 <blockquote>
     Lembre-se de adicionar no <code>.gitignore</code> as arquivos de variáveis de ambiente para não colocar dados sensíveis do seu projeto para repositórios na nuvem
 </blockquote>
 
+<p align="center">🔷</p>
+
+
+
+<h2 id="contribuições">✒️ Contribuições</h2>
+<p>
+    Toda contribuição será bem-vinda!🎉 Caso tenha encontrado algum bug, propor uma nova funcionalidade ou conversar sobre o projeto <a href="https://github.com/dev-macb/ambivar/issues">Abra uma Issue</a> e descreva seu caso. Se houver uma issue aberta e você deseja resolve-la, adicionar uma nova funcionalidade ou melhorar a documentação, desenvolva suas adições e me envie um <em>Pull Request</em>. Gostou do projeto e ainda não consegue contribuir com ele? Considere deixar uma ⭐ para o <strong>Ambivar</strong>. Desde já agradeço pelo interesse em colaborar de alguma forma com o nosso projeto.</a>
+</p>
 <p align="center">🔷</p>
 
 
