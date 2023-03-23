@@ -44,6 +44,35 @@ $ composer install
 
 
 
+<h2 id="funcionalidades">⚙️ Funcionalidades</h2>
+<p>
+Para usar o Ambivar basta criar um arquivo <code>.env</code> na raiz de seu projeto. Como, por exemplo:
+
+```env
+URL=http//localhost/exemplo
+```
+
+Use as funcionalidades do pacote
+```php
+<?php
+    // Importação do módulo
+    use DevMacB\Ambivar;
+
+    // Carregar arquivo .env no diretório especificado
+    Ambivar::carregar(__DIR__);
+
+    // Use as variáveis de ambiente
+    echo getenv('URL');
+?>
+```
+<blockquote>
+    Lembre-se de adicionar no <code>.gitignore</code> as arquivos de variáveis de ambiente para não colocar dados sensíveis do seu projeto para repositórios na nuvem
+</blockquote>
+
+<p align="center">🔷</p>
+
+
+
 <h2 id="licença">📄 Licença</h2>
 <p>
     O Ambivar utiliza a <strong>licença MIT</strong> em todo seu código, confira suas condições em <a href="https://github.com/dev-macb/ambivar/blob/dev/LICENSE.md">LICENSE</a>.
