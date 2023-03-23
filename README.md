@@ -21,6 +21,7 @@ O uso do Ambivar é bastante simples e intuitivo. Basta incluir o pacote no seu 
 <p align="center">🔷</p>
 
 
+
 <h2 id="instalação">🔧 Instalação</h2>
 <p>
     Para instalar o pacote Ambivar, certifique-se de que tenha o <a target="_blank" href="https://www.php.net/">PHP</a> e o gerenciador de pacotes <a target="_blank" href="https://getcomposer.org/">Composer</a> instalados em seu ambiente.
@@ -39,57 +40,6 @@ $ mkdir ambivar && cd ambivar
 $ git clone https://github.com/dev-macb/ambivar
 $ composer install
 ```
-<p align="center">🔷</p>
-
-
-<h2 id="funcionalidades">⚙️ Funcionalidades</h2>
-<p>
-Para usar o Ambivar basta criar um arquivo <code>.env</code> na raiz de seu projeto. Como, por exemplo:
-
-```env
-BD_DRIV=mysql | pgsql
-BD_HOST=localhost
-BD_PORT=12345
-BD_NAME=nome_do_banco
-BD_USER=usuario_do_banco
-BD_PASS=senha_do_usuario
-```
-
-Use as funcionalidades do pacote
-```php
-<?php
-    use DevMacB\Ambivar;
-
-    // Carregar .env na raiz do projeto
-    Ambivar::dotenv();
-
-    // Carregar arquivo .env especificando o diretório
-    Ambivar::carregar(__DIR__.'/pasta/subpasta');
-
-    // Adicione novas variáveis passando seu nome e velor
-    Ambivar::escrever_variavel('URL', 'http://localhost');
-
-    // Utilize os valores usando $_ENV, $_SERVER ou getvar()
-    echo getenv('URL');
-    echo $_ENV['URL'];
-    echo $_SERVER['URL'];
-
-    // Remova variáveis existentes passando seu nome
-    Ambivar::apagar_variavel('URL');
-?>
-```
-<blockquote>
-    Lembre-se de adicionar no <code>.gitignore</code> as arquivos de variáveis de ambiente para não colocar dados sensíveis do seu projeto para repositórios na nuvem
-</blockquote>
-
-<p align="center">🔷</p>
-
-
-
-<h2 id="contribuições">✒️ Contribuições</h2>
-<p>
-    Toda contribuição será bem-vinda!🎉 Caso tenha encontrado algum bug, propor uma nova funcionalidade ou conversar sobre o projeto <a href="https://github.com/dev-macb/ambivar/issues">Abra uma Issue</a> e descreva seu caso. Se houver uma issue aberta e você deseja resolve-la, adicionar uma nova funcionalidade ou melhorar a documentação, desenvolva suas adições e me envie um <em>Pull Request</em>. Gostou do projeto e ainda não consegue contribuir com ele? Considere deixar uma ⭐ para o <strong>Ambivar</strong>. Desde já agradeço pelo interesse em colaborar de alguma forma com o nosso projeto.</a>
-</p>
 <p align="center">🔷</p>
 
 
