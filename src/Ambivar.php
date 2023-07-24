@@ -60,7 +60,7 @@
         }
 
 
-        public static function gravar(string $chave, mixed $valor, string $caminho_env = __DIR__.'/../../../../.env'): bool {
+        public static function adicionar(string $chave, mixed $valor, string $caminho_env = __DIR__.'/../../../../.env'): bool {
             if (!file_exists($caminho_env)) return false;
             
             $conteudo_env = file_get_contents($caminho_env);
