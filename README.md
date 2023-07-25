@@ -59,23 +59,39 @@ URL=http//localhost/exemplo
 Use as funcionalidades do pacote
 ```php
 <?php
-    // Importação do módulo
-    use DevMacB\Ambivar;
+    use MacB\Ambivar;
 
-    // Carregar todos os arquivos com extensão .env na raiz do projeto
+
+    // Carregar arquivo .env na raiz do projeto
     Ambivar::dotenv();
 
     // Carregar um arquivo .env específico
     Ambivar::carregar(__DIR__, 'nome_arquivo');
 
+    // Carregar todos os arquivo .env do diretório específico
+    Ambivar::carregar_pasta(__DIR__.'/pasta');
+
+
+    // Verifica se uma variável de ambiente existe
+    Ambivar::existe('URL');
+
+    // Obtem o valor de uma variável ou retorna valor padrão
+    $valor = Ambivar::obter('UURRLL', null);
+
+
     // Escrever uma variável de ambiente no arquivo especificado
-    Ambivar::escrever_env(__DIR__, '', 'NOME_PROJETO', 'Ambivar');
+    Ambivar::adicionar('PROJETO', 'ambivar', __DIR__.'/.env');
 
     // Apagar uma variável de ambiente específica de um arquivo .env
-    Ambivar::apagar_env(__DIR__, '', 'URL');
+    Ambivar::remover('PROJETO', __DIR__.'/.env');
 
-    // Use as variáveis de ambiente
-    echo getenv('URL');    
+
+    // Use as variáveis de ambiente com:
+    echo getenv('URL');
+    echo $_ENV['URL'];
+    echo $_SERVER['URL'];
+    echo Ambivar::obter('URL');
+
 ?>
 ```
 <blockquote>
