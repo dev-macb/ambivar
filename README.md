@@ -1,117 +1,143 @@
 <h1 align="center">🔷 Ambivar 🔷</h1>
 
-
-
 <div id="metadados" align="center">
     <img alt="Packagist Version" src="https://img.shields.io/packagist/v/dev-macb/ambivar?color=blue&logoColor=gray">
     <img alt="Packagist Downloads" src="https://img.shields.io/packagist/dm/dev-macb/ambivar?color=blue&logoColor=gray">
     <img alt="Packagist License" src="https://img.shields.io/packagist/l/dev-macb/ambivar?color=blue&logoColor=gray">
 </div>
 
-
-
----
-
-
-
 <h2 id="objetivo">🎯 Objetivo</h2>
 <p>
-O <strong>Ambivar</strong> é um pacote em PHP que tem como objetivo facilitar a gestão de variáveis de ambiente em projetos. Esse pacote permite carregar essas variáveis através de um arquivo <code>.env</code>, que é lido automaticamente ou especificando o diretório do arquivo. 
-
-Esse tipo de abordagem tem se tornado cada vez mais comum em projetos de software, pois oferece uma maneira fácil e segura de gerenciar configurações e segredos do projeto, sem precisar expor essas informações no código fonte.
-
-O uso do Ambivar é bastante simples e intuitivo. Basta incluir o pacote no seu projeto PHP e criar um arquivo .env na raiz do projeto, contendo as variáveis de ambiente desejadas. O Ambivar se encarregará de ler esse arquivo e disponibilizar as variáveis para o projeto através de funções específicas.
+    O <strong>Ambivar</strong> é um pacote em PHP para facilitar a gestão de 
+    variáveis de ambiente em projetos. Ele permite carregar e manipular 
+    variáveis através de um arquivo <code>.env</code>, garantindo segurança e 
+    flexibilidade para o gerenciamento de configurações do sistema.
 </p>
 <p align="center">🔷</p>
 
-
-
-<h2 id="instalação">🔧 Instalação</h2>
+<h2 id="instalacao">🔧 Instalação</h2>
 <p>
-    Para instalar o pacote Ambivar, certifique-se de que tenha o <a target="_blank" href="https://www.php.net/">PHP</a> e o gerenciador de pacotes <a target="_blank" href="https://getcomposer.org/">Composer</a> instalados em seu ambiente.
-    Instale executando o seguinde comando:
+Para instalar o Ambivar, certifique-se de ter o <a target="_blank" href="https://www.php.net/">PHP</a> e o <a target="_blank" href="https://getcomposer.org/">Composer</a> instalados. Execute o seguinte comando:
 </p>
 
 ```bash
-$ composer require dev-macb/ambivar
+composer require dev-macb/ambivar
 ```
-<p>
-    Para clonar o projeto para sua máquina via <a target="_blank" href="https://git-scm.com/">git</a>, execute os comandos a seguir:
-</p>
 
-```bash
-$ mkdir ambivar && cd ambivar
-$ git clone https://github.com/dev-macb/ambivar
-$ composer install
-```
 <p align="center">🔷</p>
 
+## 🚀 Uso Básico
 
-
-<h2 id="funcionalidades">⚙️ Funcionalidades</h2>
-<p>
-Para usar o Ambivar basta criar um arquivo <code>.env</code> na raiz de seu projeto. Como, por exemplo:
-
-```env
-URL=http//localhost/exemplo
-```
-
-Use as funcionalidades do pacote
+### Carregamento de Variáveis
 ```php
-<?php
-    use MacB\Ambivar;
+use MacB\Ambivar;
 
-
-    // Carregar arquivo .env na raiz do projeto
-    Ambivar::dotenv();
-
-    // Carregar um arquivo .env específico
-    Ambivar::carregar(__DIR__, 'nome_arquivo');
-
-    // Carregar todos os arquivo .env do diretório específico
-    Ambivar::carregar_pasta(__DIR__.'/pasta');
-
-
-    // Verifica se uma variável de ambiente existe
-    Ambivar::existe('URL');
-
-    // Obtem o valor de uma variável ou retorna valor padrão
-    $valor = Ambivar::obter('UURRLL', null);
-
-
-    // Escrever uma variável de ambiente no arquivo especificado
-    Ambivar::adicionar('PROJETO', 'ambivar', __DIR__.'/.env');
-
-    // Apagar uma variável de ambiente específica de um arquivo .env
-    Ambivar::remover('PROJETO', __DIR__.'/.env');
-
-
-    // Use as variáveis de ambiente com:
-    echo getenv('URL');
-    echo $_ENV['URL'];
-    echo $_SERVER['URL'];
-    echo Ambivar::obter('URL');
-
-?>
+Ambivar::inicializar(__DIR__);  // Opcional
+Ambivar::dotenv();              // Carrega o arquivo .env padrão
+Ambivar::carregar(".env.dev");  // Carrega um arquivo específico
 ```
-<blockquote>
-    Lembre-se de adicionar no <code>.gitignore</code> as arquivos de variáveis de ambiente para não colocar dados sensíveis do seu projeto para repositórios na nuvem
-</blockquote>
+
+### Manipulação de Variáveis
+```php
+Ambivar::adicionar('APP_ENV', 'production');
+Ambivar::remover('TEMP_VAR');
+$valor = Ambivar::obter('DB_HOST', 'localhost');
+```
+
+### Acesso às Variáveis
+```php
+echo Ambivar::obter('DB_NAME');
+echo getenv('DB_NAME');
+echo $_ENV['DB_NAME'];
+```
 
 <p align="center">🔷</p>
 
+## 📚 Documentação Técnica
+
+#### `ambivar(string $diretorioBase = null): void`
+Define o diretório base para carregar arquivos `.env`.
+```php
+Ambivar::ambivar(__DIR__);
+```
+
+#### `dotenv(): bool`
+Carrega o arquivo `.env` padrão do diretório base.
+```php
+Ambivar::dotenv();
+```
+
+#### `carregar(string $caminhoDoArquivoEnv): bool`
+Carrega um arquivo `.env` específico.
+```php
+Ambivar::carregar("/caminho/.env");
+```
+
+#### `carregarDiretorio(string $diretorio): int`
+Carrega todas as variáveis de ambiente dos arquivos `.env` dentro de um diretório.
+```php
+Ambivar::carregarDiretorio("/config");
+```
+
+#### `existe(string $chave): bool`
+Verifica se uma variável de ambiente existe.
+```php
+if (Ambivar::existe('SECRET_KEY')) {
+    echo "Chave existe";
+}
+```
+
+#### `obter(string $chave, mixed $padrao = null): mixed`
+Obtém o valor de uma variável de ambiente ou retorna um valor padrão se não existir.
+```php
+$valor = Ambivar::obter('DB_PORT', 3306);
+```
+
+#### `obterTodos(): array`
+Retorna todas as variáveis de ambiente carregadas.
+```php
+$todas = Ambivar::obterTodos();
+```
+
+#### `adicionar(string $chave, string $valor, ?string $caminhoDoArquivoEnv = null): bool`
+Adiciona ou atualiza uma variável de ambiente.
+```php
+Ambivar::adicionar('APP_DEBUG', 'true');
+```
+
+#### `adicionarVarios(array $variaveis, ?string $caminhoDoArquivoEnv = null): int`
+Adiciona múltiplas variáveis de ambiente de uma só vez.
+```php
+Ambivar::adicionarVarios(['API_KEY' => '123', 'TIMEZONE' => 'UTC']);
+```
+
+#### `remover(string $chave, ?string $caminhoDoArquivoEnv = null): bool`
+Remove uma variável de ambiente.
+```php
+// Remove a variável TEMP_TOKEN do arquivo .env padrão
+Ambivar::remover('TEMP_TOKEN');
+
+// Remove a variável DEBUG de um arquivo específico
+Ambivar::remover('DEBUG', __DIR__ . '/.env.test');
+```
+
+### Boas Práticas
+- **Não commit arquivos `.env`**: Adicione ao `.gitignore` e forneça um `.env.example`.
+- **Evite armazenar dados sensíveis em texto puro**.
+- **Use nomes descritivos e padrões** (`DB_HOST`, `APP_ENV`).
+- **Sempre forneça valores padrão** ao acessar variáveis.
 
 
-<h2 id="contribuições">✒️ Contribuições</h2>
-<p>
-    Toda contribuição será bem-vinda!🎉 Caso tenha encontrado algum bug, propor uma nova funcionalidade ou conversar sobre o projeto <a href="https://github.com/dev-macb/ambivar/issues">Abra uma Issue</a> e descreva seu caso. Se houver uma issue aberta e você deseja resolve-la, adicionar uma nova funcionalidade ou melhorar a documentação, desenvolva suas adições e me envie um <em>Pull Request</em>. Gostou do projeto e ainda não consegue contribuir com ele? Considere deixar uma ⭐ para o <strong>Ambivar</strong>. Desde já agradeço pelo interesse em colaborar de alguma forma com o nosso projeto.</a>
-</p>
+
+
+## ✒️ Contribuições
+Se deseja contribuir, relate problemas ou sugira melhorias abrindo uma <a href="https://github.com/dev-macb/ambivar/issues">Issue</a> 
+ou enviando um <em>Pull Request</em>. Se gostou do projeto, deixe uma ⭐ para apoiar!
+
 <p align="center">🔷</p>
 
+## 📄 Licença
+O Ambivar é licenciado sob a <strong>MIT License</strong>. Consulte os termos em 
+<a href="https://github.com/dev-macb/ambivar/blob/dev/LICENSE.md">LICENSE</a>.
 
-
-<h2 id="licença">📄 Licença</h2>
-<p>
-    O Ambivar utiliza a <strong>licença MIT</strong> em todo seu código, confira suas condições em <a href="https://github.com/dev-macb/ambivar/blob/dev/LICENSE.md">LICENSE</a>.
-</p>
 <p align="center">🔷</p>
