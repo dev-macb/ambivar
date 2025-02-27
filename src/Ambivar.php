@@ -1,113 +1,301 @@
 <?php
-    namespace MacB;
 
+namespace MacB;
 
-    class Ambivar {
-        private static function analisar_env(string $arquivo_env): array {
-            $lista_env = [];
+/**
+ * Ambivar - Gerenciador de variáveis de ambiente para PHP
+ * 
+ * Esta classe fornece métodos para carregar, manipular e acessar
+ * variáveis de ambiente através de arquivos .env
+ */
+class Ambivar {
+    /**
+     * Constantes para caminhos, modos de operação e caracteres especiais
+     */
+    const SEPARADOR = '=';
+    const ASPAS_DUPLAS = '"';
+    const ASPAS_SIMPLES = "'";
+    const PREFIXO_COMENTARIO = '#';
+    const EXTENSAO_ENV = '.env';
+    const CAMINHO_PADRAO = '/.env';
+    const CARACTERES_ESPECIAIS = [' ', '#', '='];
+    
+    /**
+     * Diretório base para resolução de caminhos relativos.
+     * @var string
+     */
+    private static string $diretorioBase;
 
-            if (file_exists($arquivo_env)) {
-                $linhas = file($arquivo_env, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    /**
+     * Analisa um arquivo .env e retorna um array de variáveis.
+     *
+     * @param string $caminhoDoArquivo Caminho completo para o arquivo .env
+     * @return array Array associativo com as variáveis do arquivo
+     */
+    private static function analisarArquivoEnv(string $caminhoDoArquivo): array {
+        $variaveisDeAmbiente = [];
+        $linhas = Uteis::lerArquivo($caminhoDoArquivo);
+    
+        foreach ($linhas as $linha) {
+            if (empty($linha) || strpos($linha, '#') === 0) continue;
+            
+            if (strpos($linha, '=') !== false) {
+                list($chave, $valor) = explode('=', $linha, 2);
                 
-                foreach ($linhas as $linha) {
-                    if (str_contains($linha, '=') && str_starts_with($linha, '#') === false) {
-                        list($chave, $valor) = explode('=', $linha, 2);
-                        $chave = trim($chave);
-                        $valor = trim($valor);
-                        
-                        if (!empty($chave)) {
-                            $lista_env[$chave] = $valor;
-                        }
-                    }
+                $chave = Uteis::normalizarChave($chave);
+                $valor = Uteis::limparAspas(trim($valor));
+    
+                if (!empty($chave)) {
+                    $variaveisDeAmbiente[$chave] = $valor;
                 }
             }
-
-            return $lista_env;
         }
+    
+        return $variaveisDeAmbiente;
+    }
 
-
-        private static function definir_ambivar(array $lista_env): void {
-            foreach ($lista_env as $chave => $valor) {
-                putenv("$chave=$valor");
-                $_ENV[$chave] = $valor;
-                $_SERVER[$chave] = $valor;
-            }
-        }
-
-
-        public static function dotenv(): void {
-            $caminho_env = __DIR__.'/../../../../.env';
-            $lista_env = self::analisar_env($caminho_env);
-            self::definir_ambivar($lista_env);
-        }
-
-
-        public static function carregar(string $caminho_env = __DIR__.'/../../../../.env'): void {
-            if (file_exists($caminho_env)) {
-                $lista_env = self::analisar_env($caminho_env);
-                self::definir_ambivar($lista_env);
-            }
-        }
-
-
-        public static function obter(string $chave, mixed $valor_padrao = null): mixed {
-            return self::existe($chave) ? getenv($chave) : $valor_padrao;
-        }
-
-
-        public static function existe(string $chave): bool {
-            return getenv(strtoupper($chave)) !== false;
-        }
-
-
-        public static function adicionar(string $chave, mixed $valor, string $caminho_env = __DIR__.'/../../../../.env'): bool {
-            if (!file_exists($caminho_env)) return false;
-            
-            $conteudo_env = file_get_contents($caminho_env);
-
-            if (self::existe(strtoupper($chave))) {
-                $padrao = "/^" . preg_quote(strtoupper($chave), '/') . "=(.*)(\r?\n|$)/m";
-                $conteudo_env = preg_replace($padrao, "{$chave}={$valor}\n", $conteudo_env);
-            } 
-            else {
-                $conteudo_env .= strtoupper($chave) . '=' . $valor . "\n";
+    /**
+     * Define as variáveis de ambiente a partir de um array.
+     *
+     * @param array $envVars Array associativo com as variáveis a serem definidas
+     */
+    private static function definirVariaveisDeAmbiente(array $variaveisDeAmbiente): void {
+        foreach ($variaveisDeAmbiente as $chave => $valor) {
+            if (!is_string($valor)) {
+                $valor = (string)$valor;
             }
 
-            file_put_contents($caminho_env, $conteudo_env);
             putenv("$chave=$valor");
             $_ENV[$chave] = $valor;
             $_SERVER[$chave] = $valor;
-
-            return true;
-        }
-
-
-        public static function remover(string $chave, string $caminho_env = __DIR__.'/../../../../.env'): bool {
-            if (!file_exists($caminho_env)) return false;
-
-            $conteudo_env = file_get_contents($caminho_env);
-
-            if (self::existe($chave)) {
-                $padrao = "/^" . preg_quote(strtoupper($chave), '/') . "=(.*)(\r?\n|$)/m";
-                $apagar_env = preg_replace($padrao, '', $conteudo_env);
-                file_put_contents($caminho_env, $apagar_env);
-
-                unset($_ENV[$chave]);
-                unset($_SERVER[$chave]);
-
-                return true;
-            }
-
-            return false;
-        }
-
-
-        public static function carregar_pasta(string $diretorio): void {
-            $arquivos = glob(rtrim($diretorio, '/') . '/*.env');
-            
-            foreach ($arquivos as $arquivo) {
-                self::carregar($arquivo);
-            }
         }
     }
-?>
+
+    /**
+     * Inicializa o diretório base.
+     */
+    public static function inicializar(string $diretorioBase = null): void {
+        self::$diretorioBase = $diretorioBase ?? dirname(__DIR__, 4);
+    }
+
+    /**
+     * Carrega as variáveis de ambiente do arquivo .env padrão na raiz do projeto.
+     * 
+     * @return bool Verdadeiro se o carregamento foi bem-sucedido, falso caso contrário
+     */
+    public static function dotenv(): bool {
+        if (!isset(self::$diretorioBase)) {
+            self::inicializar();
+        }
+        
+        $caminhoDoArquivoEnv = self::$diretorioBase . self::CAMINHO_PADRAO;
+        return self::carregar($caminhoDoArquivoEnv);
+    }
+
+    /**
+     * Carrega as variáveis de ambiente de um arquivo .env específico.
+     *
+     * @param string $caminhoDoArquivoEnv Caminho para o arquivo .env
+     * @return bool Verdadeiro se o carregamento foi bem-sucedido, falso caso contrário
+     */
+    public static function carregar(string $caminhoDoArquivoEnv): bool {
+        if (file_exists($caminhoDoArquivoEnv) && is_readable($caminhoDoArquivoEnv)) {
+            $variaveisDeAmbiente = self::analisarArquivoEnv($caminhoDoArquivoEnv);
+            self::definirVariaveisDeAmbiente($variaveisDeAmbiente);
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * Carrega todos os arquivos .env em um diretório.
+     *
+     * @param string $diretorio Caminho para o diretório
+     * @return int Número de arquivos carregados com sucesso
+     */
+    public static function carregarDiretorio(string $diretorio): int {
+        $quantidadeDeArquivosCarregados = 0;
+        $diretorio = rtrim($diretorio, '/\\');
+        
+        if (!is_dir($diretorio) || !is_readable($diretorio)) {
+            return $quantidadeDeArquivosCarregados;
+        }
+        
+        $files = glob("$diretorio/*" . self::EXTENSAO_ENV);
+        if ($files === false) {
+            return $quantidadeDeArquivosCarregados;
+        }
+        
+        foreach ($files as $file) {
+            if (is_file($file) && is_readable($file) && self::carregar($file)) {
+                $quantidadeDeArquivosCarregados++;
+            }
+        }
+        
+        return $quantidadeDeArquivosCarregados;
+    }
+
+    /**
+     * Verifica se uma variável de ambiente existe.
+     *
+     * @param string $chave Nome da variável
+     * @return bool Verdadeiro se a variável existir, falso caso contrário
+     */
+    public static function existe(string $chave): bool {
+        $chave = strtoupper($chave);
+        
+        return isset($_ENV[$chave]) || isset($_SERVER[$chave]) || getenv($chave) !== false;
+    }
+
+    /**
+     * Retorna todas as variáveis de ambiente atualmente carregadas.
+     *
+     * @return array Array associativo com todas as variáveis de ambiente
+     */
+    public static function obterTodos(): array {
+        return $_ENV;
+    }
+
+    /**
+     * Obtém o valor de uma variável de ambiente.
+     *
+     * @param string $chave Nome da variável
+     * @param mixed $padrao Valor padrão se a variável não existir
+     * @return mixed Valor da variável ou o valor padrão
+     */
+    public static function obter(string $chave, $padrao = null) {
+        $chave = strtoupper($chave);
+        
+        if (isset($_ENV[$chave])) {
+            return $_ENV[$chave];
+        }
+        
+        if (isset($_SERVER[$chave])) {
+            return $_SERVER[$chave];
+        }
+        
+        $valor = getenv($chave);
+        if ($valor !== false) {
+            return $valor;
+        }
+        
+        return $padrao;
+    }
+
+    /**
+     * Adiciona ou atualiza uma variável de ambiente no arquivo .env e no ambiente atual.
+     *
+     * @param string $chave Nome da variável
+     * @param mixed $valor Valor da variável
+     * @param string|null $caminhoDoArquivoEnv Caminho para o arquivo .env
+     * @return bool Verdadeiro se a operação foi bem-sucedida, falso caso contrário
+     */
+    public static function adicionar(string $chave, $valor, ?string $caminhoDoArquivoEnv = null): bool {
+        if (!isset(self::$diretorioBase)) {
+            self::inicializar();
+        }
+        
+        $caminhoDoArquivoEnv = $caminhoDoArquivoEnv ?? self::$diretorioBase . self::CAMINHO_PADRAO;
+        if (!file_exists($caminhoDoArquivoEnv)) {
+            if (file_put_contents($caminhoDoArquivoEnv, '') === false) {
+                return false;
+            }
+        } 
+        else if (!is_writable($caminhoDoArquivoEnv)) {
+            return false;
+        }
+        
+        $chave = strtoupper($chave);
+        if (!is_string($valor)) {
+            $valor = (string)$valor;
+        }
+        
+        // Verificar se o valor precisa ser escapado
+        $precisaEscapar = false;
+        foreach (self::CARACTERES_ESPECIAIS as $caractere) {
+            if (strpos($valor, $caractere) !== false) {
+                $precisaEscapar = true;
+                break;
+            }
+        }
+        
+        if ($precisaEscapar) {
+            $valor = self::ASPAS_DUPLAS . str_replace(self::ASPAS_DUPLAS, '\"', $valor) . self::ASPAS_DUPLAS;
+        }
+        
+        $conteudo = file_get_contents($caminhoDoArquivoEnv);
+        $pattern = "/^" . preg_quote($chave, '/') . self::SEPARADOR . ".*(\r?\n|$)/m";
+        if (preg_match($pattern, $conteudo)) {
+            $conteudo = preg_replace($pattern, "$chave" . self::SEPARADOR . "$valor$1", $conteudo);
+        } 
+        else {
+            $conteudo .= "$chave" . self::SEPARADOR . "$valor" . PHP_EOL;
+        }
+        
+        if (file_put_contents($caminhoDoArquivoEnv, $conteudo) === false) {
+            return false;
+        }
+        
+        putenv("$chave" . self::SEPARADOR . "$valor");
+        $_ENV[$chave] = $valor;
+        $_SERVER[$chave] = $valor;
+        
+        return true;
+    }
+
+    /**
+     * Define várias variáveis de ambiente de uma só vez.
+     *
+     * @param array $variaveis Array associativo com as variáveis a serem definidas
+     * @param string|null $caminhoDoArquivoEnv Caminho para o arquivo .env
+     * @return int Número de variáveis definidas com sucesso
+     */
+    public static function adicionarVarios(array $variaveis, ?string $caminhoDoArquivoEnv = null): int {
+        $quantidade = 0;
+        
+        foreach ($variaveis as $chave => $valor) {
+            if (self::adicionar($chave, $valor, $caminhoDoArquivoEnv)) {
+                $quantidade++;
+            }
+        }
+        
+        return $quantidade;
+    }
+
+    /**
+     * Remove uma variável de ambiente do arquivo .env e do ambiente atual.
+     *
+     * @param string $chave Nome da variável
+     * @param string|null $caminhoDoArquivoEnv Caminho para o arquivo .env
+     * @return bool Verdadeiro se a operação foi bem-sucedida, falso caso contrário
+     */
+    public static function remover(string $chave, ?string $caminhoDoArquivoEnv = null): bool {
+        if (!isset(self::$diretorioBase)) {
+            self::inicializar();
+        }
+        
+        $caminhoDoArquivoEnv = $caminhoDoArquivoEnv ?? self::$diretorioBase . self::CAMINHO_PADRAO;
+        if (!file_exists($caminhoDoArquivoEnv) || !is_writable($caminhoDoArquivoEnv)) {
+            return false;
+        }
+        
+        $chave = strtoupper($chave);
+        if (!self::existe($chave)) {
+            return false;
+        }
+        
+        $conteudo = file_get_contents($caminhoDoArquivoEnv);
+        $leiaute = "/^" . preg_quote($chave, '/') . self::SEPARADOR . ".*(\r?\n|$)/m";
+        $conteudo = preg_replace($leiaute, '', $conteudo);
+        if (file_put_contents($caminhoDoArquivoEnv, $conteudo) === false) {
+            return false;
+        }
+        
+        putenv($chave);
+        unset($_ENV[$chave]);
+        unset($_SERVER[$chave]);
+        
+        return true;
+    }
+}
