@@ -1,0 +1,6 @@
+# Ignorar arquivos
+*.lock
+
+# Ignorar pastas
+vendor
+/vendor
