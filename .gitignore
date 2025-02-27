@@ -1,6 +1,6 @@
 # Ignorar arquivos
+.env
 *.lock
 
 # Ignorar pastas
-vendor
-/vendor
+/vendor/
