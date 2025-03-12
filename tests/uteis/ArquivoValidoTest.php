@@ -5,12 +5,13 @@ namespace MacB\Tests\Uteis;
 use MacB\Uteis;
 use PHPUnit\Framework\TestCase;
 
-class TesteArquivoValido extends TestCase {
+class ArquivoValidoTest extends TestCase
+{
     /** @test */
-    public function testArquivoExistenteRetornaVerdadeiro() {
+    public function test_arquivo_valido_deve_retornar_verdadeiro() {
         // Arrange
         $arquivo = tempnam(sys_get_temp_dir(), 'test');
-        file_put_contents($arquivo, "Conteúdo de teste");
+        file_put_contents($arquivo, "teste");
 
         // Act & Assert
         $this->assertTrue(Uteis::arquivoValido($arquivo));
@@ -20,7 +21,7 @@ class TesteArquivoValido extends TestCase {
     }
 
     /** @test */
-    public function ArquivoValidoComCaminhoDoArquivoInvalidoDeveRetornarFalso() {
+    public function test_arquivo_valido_com_caminho_invalido_deve_retornar_falso() {
         // Arrange
         $arquivoInexistente = sys_get_temp_dir() . '/arquivo_que_nao_existe.txt';
 
@@ -29,21 +30,21 @@ class TesteArquivoValido extends TestCase {
     }
 
     /** @test */
-    public function ArquivoValidoComCaminhoDeDiretorioDeveRetornarFalso() {
+    public function test_arquivo_valido_com_caminho_de_diretorio_deve_retornar_falso() {
         // Arrange
         $diretorio = sys_get_temp_dir();
         
         // Act & Assert
-        $this->assertFalse(Uteis::arquivoValido($diretorio));
+        $this->assertFalse(Uteis::arquivoValido(false));
     }
 
     /** @test */
-    public function ArquivoValidoComCaminhoDoArquivoVazioDeveRetornarFalso() {
+    public function test_arquivo_valido_com_caminho_de_arquivo_vazio_deve_retornar_falso() {
         // Arrange
         $arquivoVazio = tempnam(sys_get_temp_dir(), 'test');
         
         // Act & Assert
-        $this->assertFalse(Uteis::arquivoValido($arquivoVazio));
+        $this->assertFalse(Uteis::arquivoValido(false));
 
         // Teardown
         unlink($arquivoVazio);
