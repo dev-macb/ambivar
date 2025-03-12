@@ -5,8 +5,7 @@ namespace MacB\Tests\Uteis;
 use MacB\Uteis;
 use PHPUnit\Framework\TestCase;
 
-class ArquivoValidoTest extends TestCase
-{
+class ArquivoValidoTest extends TestCase {
     /** @test */
     public function test_arquivo_valido_deve_retornar_verdadeiro() {
         // Arrange

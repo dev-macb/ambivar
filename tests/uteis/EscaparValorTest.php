@@ -5,8 +5,7 @@ namespace MacB\Tests\Uteis;
 use MacB\Uteis;
 use PHPUnit\Framework\TestCase;
 
-class EscaparValorTest extends TestCase
-{
+class EscaparValorTest extends TestCase {
     /** @test */
     public function test_deve_retornar_o_mesmo_valor_se_nao_contiver_caracteres_especiais() {
         // Arrange

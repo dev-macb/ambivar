@@ -6,6 +6,7 @@ use MacB\Uteis;
 use PHPUnit\Framework\TestCase;
 
 class LimparAspasTest extends TestCase {
+    /** @test */
     public function test_deve_remover_aspas_duplas_se_estiverem_no_inicio_e_fim() {
         // Arrange
         $valor = '"Texto com aspas"';
@@ -17,6 +18,7 @@ class LimparAspasTest extends TestCase {
         $this->assertEquals('Texto com aspas', $resultado);
     }
 
+    /** @test */
     public function test_deve_remover_aspas_simples_se_estiverem_no_inicio_e_fim() {
         // Arrange
         $valor = "'Texto entre aspas'";
@@ -28,6 +30,7 @@ class LimparAspasTest extends TestCase {
         $this->assertEquals('Texto entre aspas', $resultado);
     }
 
+    /** @test */
     public function test_nao_deve_remover_aspas_se_estiverem_somente_no_inicio() {
         // Arrange
         $valor = '"Texto sem fechamento de aspas';
@@ -39,6 +42,7 @@ class LimparAspasTest extends TestCase {
         $this->assertEquals('"Texto sem fechamento de aspas', $resultado);
     }
 
+    /** @test */
     public function test_nao_deve_remover_aspas_se_estiverem_somente_no_final() {
         // Arrange
         $valor = "Texto sem abertura de aspas'";
@@ -50,6 +54,7 @@ class LimparAspasTest extends TestCase {
         $this->assertEquals("Texto sem abertura de aspas'", $resultado);
     }
 
+    /** @test */
     public function test_nao_deve_alterar_valores_sem_aspas() {
         // Arrange
         $valor = "Texto sem aspas";
@@ -61,6 +66,7 @@ class LimparAspasTest extends TestCase {
         $this->assertEquals("Texto sem aspas", $resultado);
     }
 
+    /** @test */
     public function test_nao_deve_alterar_strings_vazias() {
         // Arrange
         $valor = "";
@@ -72,6 +78,7 @@ class LimparAspasTest extends TestCase {
         $this->assertEquals("", $resultado);
     }
 
+    /** @test */
     public function test_nao_deve_alterar_numeros() {
         // Arrange
         $valor = "12345";
@@ -83,6 +90,7 @@ class LimparAspasTest extends TestCase {
         $this->assertEquals("12345", $resultado);
     }
 
+    /** @test */
     public function test_nao_deve_alterar_caracteres_especiais_sem_aspas() {
         // Arrange
         $valor = "@#%&*()";
